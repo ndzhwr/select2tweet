@@ -18,7 +18,7 @@ const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { chil
             console.log(text)
             elt!.style.display = "block"
 
-            elt!.style.left = e.pageX - 100 + 'px';
+            elt!.style.left = e.pageX - 140 + 'px';
             elt!.style.top = e.pageY - 110 + 'px';
             elt!.style.opacity = "100%"
         }
