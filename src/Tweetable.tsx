@@ -12,12 +12,10 @@ const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { chil
     }, [])
 
     const handleMouseDown = (e: any) => {
-        console.log(e.clientX, e.clientY)
+
         const text: string = document.getSelection()?.toString() as string
         if (text && text.length != 0) {
-            console.log(text)
             elt!.style.display = "block"
-
             elt!.style.left = e.pageX - 140 + 'px';
             elt!.style.top = e.pageY - 110 + 'px';
             elt!.style.opacity = "100%"
@@ -27,9 +25,22 @@ const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { chil
     const handleMouseLeave = (e: any) => {
         elt!.style.display = "none"
     }
-    const handleShareTweet = (text: string) => {
-        const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-        window.open(twitterShareUrl, '_blank');
+    const handleShareTweet = (slct: Selection) => {
+        if (slct.rangeCount > 0) {
+            const range = slct.getRangeAt(0);
+            const container = document.createElement('div');
+            container.appendChild(range.cloneContents());
+
+            const anchorTags = container.querySelectorAll('a');
+            anchorTags.forEach((anchor) => {
+                anchor.outerHTML = anchor.innerHTML;
+            });
+
+            const innerHTML = container.outerHTML;
+            console.log(innerHTML);
+            const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(innerHTML)}`;
+            window.open(twitterShareUrl, '_blank');
+        }
     };
     return (
         <div className="App" style={{
@@ -41,7 +52,7 @@ const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { chil
                 id='btn'
                 style={{ position: 'absolute', zIndex: 10 }}
                 onMouseOver={(e) => elt!.style.display = "block"}
-                onClick={(e) => handleShareTweet(document.getSelection()?.toString() as string)}>Share on twitter</button>
+                onClick={(e) => handleShareTweet(document.getSelection() as Selection)}>Share on twitter</button>
         </div>)
 }
 

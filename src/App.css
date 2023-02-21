@@ -46,13 +46,17 @@
 }
 
 
+
 #btn {
   transition: opacity 1000ms;
-  background-color: rgb(3, 20, 38);
+  background-color: rgba(32, 32, 32,0.6);
+  backdrop-filter: blur(2px);
   color: white;
   padding: 12px 20px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  box-shadow: 0px 0px 10px rgb(170, 213, 255) ;
+  display: flex;
+  align-items: start;
+  gap: 10px;
 }
