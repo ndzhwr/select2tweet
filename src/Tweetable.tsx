@@ -1,10 +1,11 @@
 import React from "react";
-
+import { convert } from "html-to-markdown";
 
 const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
     const [elt, setElt] = React.useState<HTMLButtonElement>()
 
     React.useEffect(() => {
+    	console.log(convert("<h1>Hello World<p>The fox</p></h1>"));
         const elt = document.getElementById('btn') as HTMLButtonElement
         elt.style.display = "none"
         elt.style.opacity = "0%"
@@ -36,9 +37,16 @@ const Tweetable: React.FC<{ children: React.ReactNode }> = ({ children }: { chil
                 anchor.outerHTML = anchor.innerHTML;
             });
 
-            const innerHTML = container.outerHTML;
-            console.log(innerHTML);
-            const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(innerHTML)}`;
+            let innerHTML = container.outerHTML;
+	    innerHTML = innerHTML.replace("<h1>","**");
+	    innerHTML = innerHTML.replace("</h1>","**");
+	    innerHTML = innerHTML.replace("<p>","  ");
+	    innerHTML = innerHTML.replace("</p>","");
+	    innerHTML = innerHTML.replace("<div>","");
+	    innerHTML = innerHTML.replace("</div>", "");
+	    let finalContent  = innerHTML
+	    console.log(finalContent);
+            const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(finalContent)}`;
             window.open(twitterShareUrl, '_blank');
         }
     };
